@@ -4,12 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.di.model.Product
 import com.example.domain.di.network.ResultWrapper
+import com.example.domain.di.usecase.GetCategoryUseCase
 import com.example.domain.di.usecase.GetProductUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val getProductUseCase: GetProductUseCase) : ViewModel() {
+class HomeViewModel(private val getProductUseCase: GetProductUseCase,
+                    private val getCategoryUseCase: GetCategoryUseCase) : ViewModel() {
     private val _uistate = MutableStateFlow<HomeScreenUIEvents>(HomeScreenUIEvents.Loading)
 
     init {
@@ -22,13 +24,25 @@ class HomeViewModel(private val getProductUseCase: GetProductUseCase) : ViewMode
             _uistate.value = HomeScreenUIEvents.Loading
             val featured = getProducts("Electronics")
             val popularProducts = getProducts("Jewellery")
-            if (featured.isEmpty() || popularProducts.isEmpty()) {
+            val categories = getCategory()
+            if (featured.isEmpty() || popularProducts.isEmpty() && categories.isNotEmpty()) {
                 _uistate.value = HomeScreenUIEvents.Error("Failed to load Products")
                 return@launch
             }
-            _uistate.value = HomeScreenUIEvents.Success(featured, popularProducts)
+            _uistate.value = HomeScreenUIEvents.Success(featured, popularProducts, categories)
         }
-
+    }
+    private suspend fun getCategory(): List<String> {
+        getCategoryUseCase.execute().let { result ->
+            when (result) {
+                is ResultWrapper.Success -> {
+                    return (result).value
+                }
+                is ResultWrapper.Failure -> {
+                    return emptyList()
+                }
+            }
+        }
     }
 
       private suspend  fun getProducts(category: String?) : List<Product> {
@@ -50,6 +64,10 @@ class HomeViewModel(private val getProductUseCase: GetProductUseCase) : ViewMode
 
 sealed class HomeScreenUIEvents {
     data object  Loading : HomeScreenUIEvents()
-    data class Success(val featured: List<Product>, val popularProducts: List<Product>) : HomeScreenUIEvents()
+    data class Success(
+        val featured: List<Product>,
+        val popularProducts: List<Product>,
+        val categories: List<String>
+        ) : HomeScreenUIEvents()
     data class Error(val message: String): HomeScreenUIEvents()
 }
