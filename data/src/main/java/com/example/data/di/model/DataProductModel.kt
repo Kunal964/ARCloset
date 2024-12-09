@@ -6,19 +6,19 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class DataProductModel (
-    val id: Long,
-    val title: String,
-    val price: Double,
-    val category: String,
+    val categoryId: Int,
     val description: String,
-    val Image: String? = null
+    val id: Int,
+    val image: String,
+    val price: Double,
+    val title: String
 ){
     fun toProduct()  = com.example.domain.di.model.Product(
         id = id,
         title = title,
         price = price,
-        category = category,
+        categoryId = categoryId,
         description = description,
-        Image = Image?: ""
+        image = image
     )
     }

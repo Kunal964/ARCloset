@@ -1,10 +1,12 @@
 package com.example.domain.di.network
 
+import com.example.domain.di.model.CategoriesListModel
 import com.example.domain.di.model.Product
+import com.example.domain.di.model.ProductListModel
 
 interface NetworkService {
-    suspend fun getProducts(category: String?): ResultWrapper<List<Product>>
-    suspend fun getCategories(): ResultWrapper<List<String>>
+    suspend fun getProducts(category: Int?): ResultWrapper<ProductListModel>
+    suspend fun getCategories(): ResultWrapper<CategoriesListModel>
 }
 
 sealed class ResultWrapper<out T> {
