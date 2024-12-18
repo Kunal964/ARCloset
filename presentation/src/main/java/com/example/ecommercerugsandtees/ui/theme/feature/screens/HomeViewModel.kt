@@ -1,4 +1,4 @@
-package com.example.ecommercerugsandtees.screens
+package com.example.ecommercerugsandtees.ui.theme.feature.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
