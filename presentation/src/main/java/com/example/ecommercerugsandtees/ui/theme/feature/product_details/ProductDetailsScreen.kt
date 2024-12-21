@@ -145,7 +145,7 @@ fun ProductDetailsScreen(
             Spacer(modifier = Modifier.size(16.dp))
             Row(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
                 Button(
-                    onClick = { },
+                    onClick = { viewModel.addProductToCart(product)},
                     modifier = Modifier.weight(1f)
                 ) {
                     Text(text = "Buy Now")
@@ -167,61 +167,61 @@ fun ProductDetailsScreen(
         }
     }
 
-//    Box(modifier = Modifier.fillMaxSize()) {
-//        val uiState = viewModel.state.collectAsState()
-//        val loading = remember {
-//            mutableStateOf(false)
-//        }
-//        LaunchedEffect(uiState.value) {
-//            when (uiState.value) {
-//                is ProductDetailsEvent.Loading -> {
-//                    // Show loading
-//                    loading.value = true
-//                }
-//
-//                is ProductDetailsEvent.Success -> {
-//                    // Show success
-//                    loading.value = false
-//                    Toast.makeText(
-//                        navController.context,
-//                        (uiState.value as ProductDetailsEvent.Success).message,
-//                        Toast.LENGTH_LONG
-//                    ).show()
-//                }
-//
-//                is ProductDetailsEvent.Error -> {
-//                    // Show error
-//                    Toast.makeText(
-//                        navController.context,
-//                        (uiState.value as ProductDetailsEvent.Error).message,
-//                        Toast.LENGTH_LONG
-//                    ).show()
-//                    loading.value = false
-//                }
-//
-//                else -> {
-//                    loading.value = false
-//                }
-//            }
-//        }
-//
-//        if (loading.value) {
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .background(Color.Black.copy(alpha = 0.7f)),
-//                horizontalAlignment = Alignment.CenterHorizontally,
-//                verticalArrangement = Arrangement.Center
-//            ) {
-//                CircularProgressIndicator()
-//                Text(
-//                    text = "Adding to cart...",
-//                    style = MaterialTheme.typography.bodyMedium,
-//                    color = MaterialTheme.colorScheme.onPrimary
-//                )
-//            }
-//        }
-//    }
+    Box(modifier = Modifier.fillMaxSize()) {
+        val uiState = viewModel.state.collectAsState()
+        val loading = remember {
+            mutableStateOf(false)
+        }
+        LaunchedEffect(uiState.value) {
+            when (uiState.value) {
+                is ProductDetailsEvent.Loading -> {
+                    // Show loading
+                    loading.value = true
+                }
+
+                is ProductDetailsEvent.Success -> {
+                    // Show success
+                    loading.value = false
+                    Toast.makeText(
+                        navController.context,
+                        (uiState.value as ProductDetailsEvent.Success).message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                is ProductDetailsEvent.Error -> {
+                    // Show error
+                    Toast.makeText(
+                        navController.context,
+                        (uiState.value as ProductDetailsEvent.Error).message,
+                        Toast.LENGTH_LONG
+                    ).show()
+                    loading.value = false
+                }
+
+                else -> {
+                    loading.value = false
+                }
+            }
+        }
+
+        if (loading.value) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.7f)),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                CircularProgressIndicator()
+                Text(
+                    text = "Adding to cart...",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        }
+    }
 }
 
 @Composable

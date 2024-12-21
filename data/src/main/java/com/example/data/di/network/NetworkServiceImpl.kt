@@ -3,11 +3,16 @@ package com.example.data.di.network
 import com.example.data.di.datamodule
 import com.example.data.di.model.CategoyDataModel
 import com.example.data.di.model.DataProductModel
+import com.example.data.di.model.request.AddToCartRequest
+import com.example.data.di.model.response.CartResponse
 import com.example.data.di.model.response.CategoriesListResponse
 import com.example.data.di.model.response.ProductListResponse
+import com.example.domain.di.model.CartItemModel
+import com.example.domain.di.model.CartModel
 import com.example.domain.di.model.CategoriesListModel
 import com.example.domain.di.model.Product
 import com.example.domain.di.model.ProductListModel
+import com.example.domain.di.model.request.AddCartRequestModel
 import com.example.domain.di.network.NetworkService
 import com.example.domain.di.network.ResultWrapper
 import io.ktor.client.HttpClient
@@ -46,7 +51,26 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
             })
     }
 
-    @OptIn(InternalAPI::class)
+    override suspend fun addProductToCart(request: AddCartRequestModel): ResultWrapper<CartModel> {
+        val url = "$baseUrl/cart/1"
+        return makeWebRequest(url = url,
+            method = HttpMethod.Post,
+            body = AddToCartRequest.fromCartRequestModel(request),
+            mapper = { cartItem: CartResponse ->
+                cartItem.toCartModel()
+            })
+    }
+
+    override suspend fun getCart(): ResultWrapper<CartModel> {
+        val url = "$baseUrl/cart/1"
+        return makeWebRequest(url = url,
+            method = HttpMethod.Get,
+            mapper = { cartItem: CartResponse ->
+                cartItem.toCartModel()
+            })
+    }
+
+
     suspend inline fun <reified T, R> makeWebRequest(
         url: String,
         method: HttpMethod,

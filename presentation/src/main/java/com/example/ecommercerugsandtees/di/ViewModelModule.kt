@@ -1,5 +1,6 @@
 package com.example.ecommercerugsandtees.di
 
+import com.example.ecommercerugsandtees.ui.theme.feature.cart.CartViewModel
 import com.example.ecommercerugsandtees.ui.theme.feature.product_details.ProductDetailsViewModel
 import com.example.ecommercerugsandtees.ui.theme.feature.screens.HomeViewModel
 import org.koin.core.module.dsl.viewModel
@@ -11,6 +12,10 @@ val viewModelModule = module {
         HomeViewModel(get(), get())
     }
     viewModel {
-        ProductDetailsViewModel()
+        ProductDetailsViewModel(get())
     }
+    viewModel {
+        CartViewModel(get())
+    }
+
 }
