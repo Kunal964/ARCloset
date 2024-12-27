@@ -1,5 +1,6 @@
 package com.example.ecommercerugsandtees.ui.theme.feature.cart
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.di.model.CartItemModel
@@ -22,10 +23,11 @@ class CartViewModel(val cartUseCase: GetCartUseCase) : ViewModel() {
             cartUseCase.execute().let { result ->
                 when (result) {
                     is ResultWrapper.Success -> {
+                        Log.d("CartViewModel", "Cart items: ${result.value.data}")
                         _uiState.value = CartEvent.Success(result.value.data)
                     }
-
                     is ResultWrapper.Failure -> {
+                        Log.e("CartViewModel", "Error: ${result.exception}")
                         _uiState.value = CartEvent.Error("Something went wrong!")
                     }
                 }

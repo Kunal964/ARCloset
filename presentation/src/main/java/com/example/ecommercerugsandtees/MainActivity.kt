@@ -39,6 +39,7 @@ import com.example.ecommercerugsandtees.navigation.ProductDetails
 import com.example.ecommercerugsandtees.navigation.ProfileScreen
 import com.example.ecommercerugsandtees.ui.theme.feature.screens.HomeScreen
 import com.example.ecommercerugsandtees.ui.theme.ECommerceRugsandTeesTheme
+import com.example.ecommercerugsandtees.ui.theme.feature.cart.CartScreen
 import com.example.ecommercerugsandtees.ui.theme.feature.product_details.ProductDetailsScreen
 import kotlin.reflect.typeOf
 
@@ -72,9 +73,8 @@ class MainActivity : ComponentActivity() {
                             }
                             composable<CartScreen> {
                                 shouldShowBottomNav.value = true
-                               Box(modifier = Modifier.fillMaxSize()) {
-                                   Text(text = "Cart")
-                               }
+                                   CartScreen(navController)
+
                             }
                             composable<ProfileScreen> {
                                 shouldShowBottomNav.value = true

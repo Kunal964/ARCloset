@@ -67,6 +67,7 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
             is CartEvent.Loading -> {
                 loading.value = true
                 errorMsg.value = null
+
             }
 
             is CartEvent.Error -> {
@@ -88,13 +89,14 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
     }
     Column(modifier = Modifier.fillMaxSize()) {
         val pullToRefreshState = rememberPullToRefreshState()
-        if (pullToRefreshState.isRefreshing) {
-            LaunchedEffect(true) {
+        LaunchedEffect(pullToRefreshState.isRefreshing) {
+            if (pullToRefreshState.isRefreshing) {
                 viewModel.getCart()
                 delay(500)
                 pullToRefreshState.endRefresh()
             }
         }
+
 
         Box(modifier = Modifier.fillMaxSize()) {
             PullToRefreshContainer(
@@ -109,33 +111,31 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
                 Text(text = "Cart", style = MaterialTheme.typography.titleSmall)
                 Spacer(modifier = Modifier.size(8.dp))
                 val shouldShowList = !loading.value && errorMsg.value == null
-                AnimatedVisibility(
-                    visible = shouldShowList, enter = fadeIn(), modifier = Modifier.weight(1f)
-                ) {
+                AnimatedVisibility(visible = shouldShowList, enter = fadeIn(), modifier = Modifier.weight(1f))
+                {
                     LazyColumn {
                         items(cartItems.value) { item ->
                             CartItem(item = item)
-
                         }
                     }
 
                 }
-            if (loading.value) {
-                // Show loading
+
+            }
+                if (loading.value) {
+                    // Show loading
                     CircularProgressIndicator(modifier = Modifier.size(48.dp))
                     Text(text = "Loading...")
-            }
-            if (errorMsg.value != null) {
-                Text(
-                    text = errorMsg.value ?: "Something went wrong!",
-
-                )
+                }
+                if (errorMsg.value != null) {
+                    Text(text = errorMsg.value ?: "Something went wrong!",)
+                }
             }
 
         }
-    }
 
 }
+
 
 @Composable
 fun CartItem(item: CartItemModel) {
@@ -196,6 +196,6 @@ fun CartItem(item: CartItemModel) {
         }
     }
 }
-}
 
-}
+
+
