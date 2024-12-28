@@ -34,6 +34,7 @@ import com.example.domain.di.model.Product
 import com.example.ecommercerugsandtees.model.UiProductModel
 import com.example.ecommercerugsandtees.model.productNavType
 import com.example.ecommercerugsandtees.navigation.CartScreen
+import com.example.ecommercerugsandtees.navigation.CartSummaryScreen
 import com.example.ecommercerugsandtees.navigation.HomeScreen
 import com.example.ecommercerugsandtees.navigation.ProductDetails
 import com.example.ecommercerugsandtees.navigation.ProfileScreen
@@ -41,6 +42,7 @@ import com.example.ecommercerugsandtees.ui.theme.feature.screens.HomeScreen
 import com.example.ecommercerugsandtees.ui.theme.ECommerceRugsandTeesTheme
 import com.example.ecommercerugsandtees.ui.theme.feature.cart.CartScreen
 import com.example.ecommercerugsandtees.ui.theme.feature.product_details.ProductDetailsScreen
+import com.example.ecommercerugsandtees.ui.theme.feature.summary.CartSummaryScreen
 import kotlin.reflect.typeOf
 
 class MainActivity : ComponentActivity() {
@@ -81,6 +83,10 @@ class MainActivity : ComponentActivity() {
                                 Box(modifier = Modifier.fillMaxSize()) {
                                     Text(text = "Profile")
                                 }
+                            }
+                            composable<CartSummaryScreen> {
+                                shouldShowBottomNav.value = false
+                                CartSummaryScreen(navController = navController)
                             }
                             composable<ProductDetails>(
                                 typeMap = mapOf(typeOf<UiProductModel>() to productNavType)

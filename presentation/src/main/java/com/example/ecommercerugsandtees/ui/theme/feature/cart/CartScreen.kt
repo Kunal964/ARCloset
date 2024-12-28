@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
@@ -43,6 +44,7 @@ import coil.compose.AsyncImage
 import com.example.domain.di.model.CartItemModel
 import com.example.ecommercerugsandtees.R
 import com.example.data.di.model.response.CartItem
+import com.example.ecommercerugsandtees.navigation.CartSummaryScreen
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
@@ -115,8 +117,16 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
                 {
                     LazyColumn {
                         items(cartItems.value) { item ->
-                            CartItem(item = item)
+                            CartItem(item = item,
+                                onIncrement = { viewModel.incrementQuantity(it) },
+                                onDecrement = { viewModel.decrementQuantity(it) },
+                                onRemove = { viewModel.removeItem(it) })
                         }
+                    }
+                }
+                if (shouldShowList) {
+                    Button(onClick = { navController.navigate(CartSummaryScreen) }, modifier = Modifier.fillMaxWidth()) {
+                        Text(text = "CheckOut")
                     }
 
                 }
@@ -138,7 +148,10 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
 
 
 @Composable
-fun CartItem(item: CartItemModel) {
+fun CartItem(item: CartItemModel,
+             onIncrement: (CartItemModel) -> Unit,
+             onDecrement: (CartItemModel) -> Unit,
+             onRemove: (CartItemModel) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -172,20 +185,20 @@ fun CartItem(item: CartItemModel) {
         }
         Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.End) {
 
-            IconButton(onClick = {  }) {
+            IconButton(onClick = { onRemove(item) }) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_delete), contentDescription = null
                 )
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = {  }) {
+                IconButton(onClick = { onIncrement(item) }) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_add), contentDescription = null
                     )
                 }
                 Text(text = item.quantity.toString())
-                IconButton(onClick = { }) {
+                IconButton(onClick = { onDecrement(item) }) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_subtract),
                         contentDescription = null

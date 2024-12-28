@@ -77,7 +77,7 @@ fun ProductDetailsScreen(
                     .clip(CircleShape)
                     .background(Color.LightGray.copy(alpha = 0.4f))
                     .padding(8.dp)
-                    .align(Alignment.TopStart)
+                    .align(Alignment.TopEnd)
             )
         }
         Column(modifier = Modifier.fillMaxSize()) {

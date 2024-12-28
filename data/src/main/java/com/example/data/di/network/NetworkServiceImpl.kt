@@ -1,16 +1,14 @@
 package com.example.data.di.network
 
-import com.example.data.di.datamodule
-import com.example.data.di.model.CategoyDataModel
-import com.example.data.di.model.DataProductModel
 import com.example.data.di.model.request.AddToCartRequest
 import com.example.data.di.model.response.CartResponse
+import com.example.data.di.model.response.CartSummaryResponse
 import com.example.data.di.model.response.CategoriesListResponse
 import com.example.data.di.model.response.ProductListResponse
 import com.example.domain.di.model.CartItemModel
 import com.example.domain.di.model.CartModel
+import com.example.domain.di.model.CartSummary
 import com.example.domain.di.model.CategoriesListModel
-import com.example.domain.di.model.Product
 import com.example.domain.di.model.ProductListModel
 import com.example.domain.di.model.request.AddCartRequestModel
 import com.example.domain.di.network.NetworkService
@@ -26,7 +24,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.Parameters
 import io.ktor.http.contentType
-import io.ktor.utils.io.InternalAPI
 
 
 class NetworkServiceImpl(val client: HttpClient) : NetworkService {
@@ -68,6 +65,40 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
             mapper = { cartItem: CartResponse ->
                 cartItem.toCartModel()
             })
+    }
+
+    override suspend fun updateQuantity(cartItemModel: CartItemModel): ResultWrapper<CartModel> {
+        val url = "$baseUrl/cart/1${cartItemModel.id}"
+        return makeWebRequest(url = url,
+            method = HttpMethod.Put,
+            body = AddToCartRequest(
+                productId = cartItemModel.productId,
+                quantity = cartItemModel.quantity
+            ),
+            mapper = { cartItem: CartResponse ->
+                cartItem.toCartModel()
+            }
+        )
+    }
+
+    override suspend fun deleteItem(cartItemId: Int, userId: Int): ResultWrapper<CartModel> {
+        val url = "$baseUrl/cart/$userId/$cartItemId"
+        return makeWebRequest(url = url,
+            method = HttpMethod.Delete,
+            mapper = { cartItem: CartResponse ->
+                cartItem.toCartModel()
+            }
+        )
+    }
+
+    override suspend fun getCartSummary(userId: Long): ResultWrapper<CartSummary> {
+        val url = "$baseUrl/checkout/$userId/summary"
+        return makeWebRequest(url = url,
+            method = HttpMethod.Get,
+            mapper = { cartSummary: CartSummaryResponse ->
+                cartSummary.toCartSummary()
+            }
+        )
     }
 
 
