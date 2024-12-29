@@ -20,7 +20,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        CartSummaryViewModel(get())
+        CartSummaryViewModel(get(), get())
     }
 
 }

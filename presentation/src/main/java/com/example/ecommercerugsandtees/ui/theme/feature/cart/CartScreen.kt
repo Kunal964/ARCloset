@@ -38,6 +38,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -91,14 +92,13 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
     }
     Column(modifier = Modifier.fillMaxSize()) {
         val pullToRefreshState = rememberPullToRefreshState()
-        LaunchedEffect(pullToRefreshState.isRefreshing) {
-            if (pullToRefreshState.isRefreshing) {
+        if (pullToRefreshState.isRefreshing) {
+            LaunchedEffect(true) {
                 viewModel.getCart()
                 delay(500)
                 pullToRefreshState.endRefresh()
             }
         }
-
 
         Box(modifier = Modifier.fillMaxSize()) {
             PullToRefreshContainer(
@@ -128,30 +128,42 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
                     Button(onClick = { navController.navigate(CartSummaryScreen) }, modifier = Modifier.fillMaxWidth()) {
                         Text(text = "CheckOut")
                     }
-
                 }
-
             }
-                if (loading.value) {
-                    // Show loading
+            if (loading.value) {
+                // Show loading
+                Column(modifier = Modifier.align(Alignment.Center)) {
                     CircularProgressIndicator(modifier = Modifier.size(48.dp))
                     Text(text = "Loading...")
                 }
-                if (errorMsg.value != null) {
-                    Text(text = errorMsg.value ?: "Something went wrong!",)
+            }
+            // Error Message - Centered
+            if (errorMsg.value != null) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .align(Alignment.Center),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = errorMsg.value ?: "Something went wrong!",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.Gray,
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
-
+            }
         }
-
 }
 
 
 @Composable
-fun CartItem(item: CartItemModel,
-             onIncrement: (CartItemModel) -> Unit,
-             onDecrement: (CartItemModel) -> Unit,
-             onRemove: (CartItemModel) -> Unit) {
+fun CartItem(
+    item: CartItemModel,
+    onIncrement: (CartItemModel) -> Unit,
+    onDecrement: (CartItemModel) -> Unit,
+    onRemove: (CartItemModel) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

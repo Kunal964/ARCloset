@@ -1,9 +1,10 @@
-package com.example.ecommercerugsandtees.model
+package com.example.ecommercerugsandtees.navigation
 
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.navigation.NavType
+import com.example.ecommercerugsandtees.model.UiProductModel
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.net.URLEncoder
@@ -44,6 +45,4 @@ val productNavType = object : NavType<UiProductModel>(isNullableAllowed = false)
             )
         )
     }
-
-
 }

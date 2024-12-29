@@ -30,19 +30,22 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.example.domain.di.model.Product
 import com.example.ecommercerugsandtees.model.UiProductModel
-import com.example.ecommercerugsandtees.model.productNavType
+import com.example.ecommercerugsandtees.navigation.productNavType
 import com.example.ecommercerugsandtees.navigation.CartScreen
 import com.example.ecommercerugsandtees.navigation.CartSummaryScreen
 import com.example.ecommercerugsandtees.navigation.HomeScreen
 import com.example.ecommercerugsandtees.navigation.ProductDetails
 import com.example.ecommercerugsandtees.navigation.ProfileScreen
+import com.example.ecommercerugsandtees.navigation.UserAddressRoute
+import com.example.ecommercerugsandtees.navigation.UserAddressRouteWrapper
+import com.example.ecommercerugsandtees.navigation.userAddressNavType
 import com.example.ecommercerugsandtees.ui.theme.feature.screens.HomeScreen
 import com.example.ecommercerugsandtees.ui.theme.ECommerceRugsandTeesTheme
 import com.example.ecommercerugsandtees.ui.theme.feature.cart.CartScreen
 import com.example.ecommercerugsandtees.ui.theme.feature.product_details.ProductDetailsScreen
 import com.example.ecommercerugsandtees.ui.theme.feature.summary.CartSummaryScreen
+import com.example.ecommercerugsandtees.user_address.UserAddressScreen
 import kotlin.reflect.typeOf
 
 class MainActivity : ComponentActivity() {
@@ -95,6 +98,16 @@ class MainActivity : ComponentActivity() {
                                 val productRoute = it.toRoute<ProductDetails>()
                                 ProductDetailsScreen(navController, productRoute.product)
 
+                            }
+                            composable<UserAddressRoute>(
+                                typeMap = mapOf(typeOf<UserAddressRouteWrapper>() to userAddressNavType)
+                            ) {
+                                shouldShowBottomNav.value = false
+                                val userAddressRoute = it.toRoute<UserAddressRoute>()
+                                UserAddressScreen(
+                                    navController = navController,
+                                    userAddress = userAddressRoute.userAddressWrapper.userAddress
+                                )
                             }
                         }
                     }
