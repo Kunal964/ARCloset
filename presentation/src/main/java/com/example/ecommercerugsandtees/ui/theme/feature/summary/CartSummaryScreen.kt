@@ -129,8 +129,8 @@ fun CartSummaryScreen(
                         Button(
                             onClick = {
                                 navController.popBackStack(
-                                    BottomNavItems.Home,
-                                    inclusive = true
+                                    HomeScreen,
+                                    inclusive = false
                                 )
                             }
                         ) {

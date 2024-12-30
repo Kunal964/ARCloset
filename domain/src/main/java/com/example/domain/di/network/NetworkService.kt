@@ -5,6 +5,7 @@ import com.example.domain.di.model.CartItemModel
 import com.example.domain.di.model.CartModel
 import com.example.domain.di.model.CartSummary
 import com.example.domain.di.model.CategoriesListModel
+import com.example.domain.di.model.OrdersListModel
 import com.example.domain.di.model.ProductListModel
 import com.example.domain.di.model.request.AddCartRequestModel
 
@@ -17,6 +18,7 @@ interface NetworkService {
     suspend fun deleteItem(cartItemId: Int, userId: Int): ResultWrapper<CartModel>
     suspend fun getCartSummary(userId: Long): ResultWrapper<CartSummary>
     suspend fun placeOrder(address: AddressDomainModel, userId: Int): ResultWrapper<Long>
+    suspend fun getOrderList(): ResultWrapper<OrdersListModel>
 }
 
 sealed class ResultWrapper<out T> {

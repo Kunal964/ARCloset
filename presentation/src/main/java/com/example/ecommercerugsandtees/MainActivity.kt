@@ -35,6 +35,7 @@ import com.example.ecommercerugsandtees.navigation.productNavType
 import com.example.ecommercerugsandtees.navigation.CartScreen
 import com.example.ecommercerugsandtees.navigation.CartSummaryScreen
 import com.example.ecommercerugsandtees.navigation.HomeScreen
+import com.example.ecommercerugsandtees.navigation.OrdersScreen
 import com.example.ecommercerugsandtees.navigation.ProductDetails
 import com.example.ecommercerugsandtees.navigation.ProfileScreen
 import com.example.ecommercerugsandtees.navigation.UserAddressRoute
@@ -43,6 +44,7 @@ import com.example.ecommercerugsandtees.navigation.userAddressNavType
 import com.example.ecommercerugsandtees.ui.theme.feature.screens.HomeScreen
 import com.example.ecommercerugsandtees.ui.theme.ECommerceRugsandTeesTheme
 import com.example.ecommercerugsandtees.ui.theme.feature.cart.CartScreen
+import com.example.ecommercerugsandtees.ui.theme.feature.orders.OrdersScreen
 import com.example.ecommercerugsandtees.ui.theme.feature.product_details.ProductDetailsScreen
 import com.example.ecommercerugsandtees.ui.theme.feature.summary.CartSummaryScreen
 import com.example.ecommercerugsandtees.user_address.UserAddressScreen
@@ -80,6 +82,10 @@ class MainActivity : ComponentActivity() {
                                 shouldShowBottomNav.value = true
                                    CartScreen(navController)
 
+                            }
+                            composable<OrdersScreen> {
+                                shouldShowBottomNav.value = true
+                                OrdersScreen()
                             }
                             composable<ProfileScreen> {
                                 shouldShowBottomNav.value = true
@@ -122,7 +128,7 @@ fun BottomNavigationBar(navController: NavController) {
         val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
         val items = listOf(
             BottomNavItems.Home,
-            BottomNavItems.Cart,
+            BottomNavItems.Orders,
             BottomNavItems.Profile
         )
 
@@ -156,7 +162,7 @@ fun BottomNavigationBar(navController: NavController) {
 
 sealed class BottomNavItems(val route: Any, val title: String, val icon: Int) {
     object Home: BottomNavItems(HomeScreen,"Home", icon = R.drawable.ic_home)
-    object Cart: BottomNavItems(CartScreen,"Cart", icon = R.drawable.ic_cart)
+    object Orders: BottomNavItems(OrdersScreen,"Orders", icon = R.drawable.ic_orders)
     object Profile: BottomNavItems(ProfileScreen, "Profile", icon = R.drawable.profile)
 }
 

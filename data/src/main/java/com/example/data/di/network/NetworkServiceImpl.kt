@@ -5,6 +5,7 @@ import com.example.data.di.model.request.AddressDataModel
 import com.example.data.di.model.response.CartResponse
 import com.example.data.di.model.response.CartSummaryResponse
 import com.example.data.di.model.response.CategoriesListResponse
+import com.example.data.di.model.response.OrderListResponse
 import com.example.data.di.model.response.PlaceOrderResponse
 import com.example.data.di.model.response.ProductListResponse
 import com.example.domain.di.model.AddressDomainModel
@@ -12,6 +13,7 @@ import com.example.domain.di.model.CartItemModel
 import com.example.domain.di.model.CartModel
 import com.example.domain.di.model.CartSummary
 import com.example.domain.di.model.CategoriesListModel
+import com.example.domain.di.model.OrdersListModel
 import com.example.domain.di.model.ProductListModel
 import com.example.domain.di.model.request.AddCartRequestModel
 import com.example.domain.di.network.NetworkService
@@ -38,6 +40,15 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
             method = HttpMethod.Get,
             mapper = { dataModels: ProductListResponse ->
                 dataModels.toProductList()
+            })
+    }
+
+    override suspend fun getOrderList(): ResultWrapper<OrdersListModel> {
+        val url = "$baseUrl/orders/1"
+        return makeWebRequest(url = url,
+            method = HttpMethod.Get,
+            mapper = { ordersResponse: OrderListResponse ->
+                ordersResponse.toDomainResponse()
             })
     }
 

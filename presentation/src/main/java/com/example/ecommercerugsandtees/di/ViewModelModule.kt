@@ -1,6 +1,7 @@
 package com.example.ecommercerugsandtees.di
 
 import com.example.ecommercerugsandtees.ui.theme.feature.cart.CartViewModel
+import com.example.ecommercerugsandtees.ui.theme.feature.orders.OrdersViewModel
 import com.example.ecommercerugsandtees.ui.theme.feature.product_details.ProductDetailsViewModel
 import com.example.ecommercerugsandtees.ui.theme.feature.screens.HomeViewModel
 import com.example.ecommercerugsandtees.ui.theme.feature.summary.CartSummaryViewModel
@@ -21,6 +22,9 @@ val viewModelModule = module {
 
     viewModel {
         CartSummaryViewModel(get(), get())
+    }
+    viewModel {
+        OrdersViewModel(get())
     }
 
 }
