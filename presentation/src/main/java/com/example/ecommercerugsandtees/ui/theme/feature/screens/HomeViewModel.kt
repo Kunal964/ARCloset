@@ -22,8 +22,8 @@ class HomeViewModel(private val getProductUseCase: GetProductUseCase,
     private fun getAllProducts() {
         viewModelScope.launch {
             _uistate.value = HomeScreenUIEvents.Loading
-            val featured = getProducts(1)
-            val popularProducts = getProducts(2)
+            val featured = getProducts(2)
+            val popularProducts = getProducts(3)
             val categories = getCategory()
             if (featured.isEmpty() || popularProducts.isEmpty() && categories.isNotEmpty()) {
                 _uistate.value = HomeScreenUIEvents.Error("Failed to load Products")

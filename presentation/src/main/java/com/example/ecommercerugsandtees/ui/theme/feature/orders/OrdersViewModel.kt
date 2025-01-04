@@ -5,16 +5,19 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.di.model.OrdersData
 import com.example.domain.di.network.ResultWrapper
 import com.example.domain.di.usecase.OrderListUseCase
+import com.example.ecommercerugsandtees.ShopperSession
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class OrdersViewModel(
     private val orderListUseCase: OrderListUseCase,
+    private val shopperSession: ShopperSession
 ) : ViewModel() {
 
     private val _ordersEvent = MutableStateFlow<OrdersEvent>(OrdersEvent.Loading)
     val ordersEvent = _ordersEvent.asStateFlow()
+    val userDomainModel = shopperSession.getUser()
 
     init {
         getOrderList()
@@ -27,7 +30,7 @@ class OrdersViewModel(
 
     private fun getOrderList() {
         viewModelScope.launch {
-            val result = orderListUseCase.execute()
+            val result = orderListUseCase.execute(userDomainModel!!.id!!.toLong())
 
             when (result) {
                 is ResultWrapper.Success -> {

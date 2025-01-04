@@ -35,26 +35,32 @@ import com.example.ecommercerugsandtees.navigation.productNavType
 import com.example.ecommercerugsandtees.navigation.CartScreen
 import com.example.ecommercerugsandtees.navigation.CartSummaryScreen
 import com.example.ecommercerugsandtees.navigation.HomeScreen
+import com.example.ecommercerugsandtees.navigation.LoginScreen
 import com.example.ecommercerugsandtees.navigation.OrdersScreen
 import com.example.ecommercerugsandtees.navigation.ProductDetails
 import com.example.ecommercerugsandtees.navigation.ProfileScreen
+import com.example.ecommercerugsandtees.navigation.RegisterScreen
 import com.example.ecommercerugsandtees.navigation.UserAddressRoute
 import com.example.ecommercerugsandtees.navigation.UserAddressRouteWrapper
 import com.example.ecommercerugsandtees.navigation.userAddressNavType
 import com.example.ecommercerugsandtees.ui.theme.feature.screens.HomeScreen
 import com.example.ecommercerugsandtees.ui.theme.ECommerceRugsandTeesTheme
+import com.example.ecommercerugsandtees.ui.theme.feature.account.login.LoginScreen
+import com.example.ecommercerugsandtees.ui.theme.feature.account.register.RegisterScreen
 import com.example.ecommercerugsandtees.ui.theme.feature.cart.CartScreen
 import com.example.ecommercerugsandtees.ui.theme.feature.orders.OrdersScreen
 import com.example.ecommercerugsandtees.ui.theme.feature.product_details.ProductDetailsScreen
 import com.example.ecommercerugsandtees.ui.theme.feature.summary.CartSummaryScreen
 import com.example.ecommercerugsandtees.user_address.UserAddressScreen
 import kotlin.reflect.typeOf
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val shopperSession : ShopperSession by inject()
             ECommerceRugsandTeesTheme {
                 val shouldShowBottomNav = remember {
                     mutableStateOf(true)
@@ -72,7 +78,22 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(it)
                     ) {
-                        NavHost(navController = navController, startDestination = HomeScreen) {
+                        NavHost(
+                            navController = navController,
+                            startDestination = if (shopperSession.getUser() != null) {
+                                HomeScreen
+                            } else {
+                                LoginScreen
+                            }
+                        ) {
+                            composable<LoginScreen> {
+                                shouldShowBottomNav.value = false
+                                LoginScreen(navController)
+                            }
+                            composable<RegisterScreen> {
+                                shouldShowBottomNav.value = false
+                                RegisterScreen(navController)
+                            }
                             composable<HomeScreen> {
                                 shouldShowBottomNav.value = true
                                 HomeScreen(navController)

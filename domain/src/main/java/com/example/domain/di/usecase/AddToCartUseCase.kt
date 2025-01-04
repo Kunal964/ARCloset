@@ -5,5 +5,5 @@ import com.example.domain.di.model.request.AddCartRequestModel
 import com.example.domain.di.repo.CartRepository
 
 class AddToCartUseCase(private val cartRepository: CartRepository) {
-    suspend fun execute(request: AddCartRequestModel) = cartRepository.addProductToCart(request)
+    suspend fun execute(request: AddCartRequestModel,userId: Long) = cartRepository.addProductToCart(request, userId)
 }

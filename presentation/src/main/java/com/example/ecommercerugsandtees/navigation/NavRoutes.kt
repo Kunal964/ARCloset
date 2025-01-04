@@ -24,3 +24,10 @@ object CartSummaryScreen
 
 @Serializable
 data class UserAddressRoute(val userAddressWrapper: UserAddressRouteWrapper)
+
+
+@Serializable
+object LoginScreen
+
+@Serializable
+object RegisterScreen
