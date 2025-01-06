@@ -52,8 +52,9 @@ import com.example.ecommercerugsandtees.ui.theme.feature.orders.OrdersScreen
 import com.example.ecommercerugsandtees.ui.theme.feature.product_details.ProductDetailsScreen
 import com.example.ecommercerugsandtees.ui.theme.feature.summary.CartSummaryScreen
 import com.example.ecommercerugsandtees.user_address.UserAddressScreen
-import kotlin.reflect.typeOf
 import org.koin.android.ext.android.inject
+import kotlin.reflect.typeOf
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

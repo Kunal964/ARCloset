@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ProductDetailsViewModel(val useCase: AddToCartUseCase,
-                              val shopperSession: ShopperSession) : ViewModel()  {
+                              private val shopperSession: ShopperSession) : ViewModel()  {
     private val _state = MutableStateFlow<ProductDetailsEvent>(ProductDetailsEvent.Nothing)
     val state = _state.asStateFlow()
     val userDomainModel = shopperSession.getUser()
