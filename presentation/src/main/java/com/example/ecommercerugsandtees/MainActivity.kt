@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -36,6 +37,7 @@ import com.example.ecommercerugsandtees.navigation.CartScreen
 import com.example.ecommercerugsandtees.navigation.CartSummaryScreen
 import com.example.ecommercerugsandtees.navigation.HomeScreen
 import com.example.ecommercerugsandtees.navigation.LoginScreen
+import com.example.ecommercerugsandtees.navigation.LogoutScreen
 import com.example.ecommercerugsandtees.navigation.OrdersScreen
 import com.example.ecommercerugsandtees.navigation.ProductDetails
 import com.example.ecommercerugsandtees.navigation.ProfileScreen
@@ -43,6 +45,7 @@ import com.example.ecommercerugsandtees.navigation.RegisterScreen
 import com.example.ecommercerugsandtees.navigation.UserAddressRoute
 import com.example.ecommercerugsandtees.navigation.UserAddressRouteWrapper
 import com.example.ecommercerugsandtees.navigation.userAddressNavType
+import com.example.ecommercerugsandtees.ui.feature.account.logout.LogoutScreen
 import com.example.ecommercerugsandtees.ui.theme.feature.screens.HomeScreen
 import com.example.ecommercerugsandtees.ui.theme.ECommerceRugsandTeesTheme
 import com.example.ecommercerugsandtees.ui.theme.feature.account.login.LoginScreen
@@ -61,7 +64,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val shopperSession : ShopperSession by inject()
+        val shopperSession : ShopperSession by inject ()
             ECommerceRugsandTeesTheme {
                 val shouldShowBottomNav = remember {
                     mutableStateOf(true)
@@ -95,6 +98,11 @@ class MainActivity : ComponentActivity() {
                                 shouldShowBottomNav.value = false
                                 RegisterScreen(navController)
                             }
+                            composable<LogoutScreen> {
+                                shouldShowBottomNav.value = true
+                                LogoutScreen(navController, context = LocalContext.current, shopperSession)
+                            }
+
                             composable<HomeScreen> {
                                 shouldShowBottomNav.value = true
                                 HomeScreen(navController)
@@ -151,7 +159,8 @@ fun BottomNavigationBar(navController: NavController) {
         val items = listOf(
             BottomNavItems.Home,
             BottomNavItems.Orders,
-            BottomNavItems.Profile
+            BottomNavItems.Profile,
+            BottomNavItems.Logout
         )
 
         items.forEach { item ->
@@ -186,5 +195,6 @@ sealed class BottomNavItems(val route: Any, val title: String, val icon: Int) {
     object Home: BottomNavItems(HomeScreen,"Home", icon = R.drawable.ic_home)
     object Orders: BottomNavItems(OrdersScreen,"Orders", icon = R.drawable.ic_orders)
     object Profile: BottomNavItems(ProfileScreen, "Profile", icon = R.drawable.profile)
+    object Logout: BottomNavItems(LogoutScreen, "Logout", icon = R.drawable.logout)
 }
 

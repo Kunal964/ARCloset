@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.ecommercerugsandtees.R
@@ -139,4 +140,11 @@ fun RegisterContent(
                 onSignInClick()
             })
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewRegisterScreen() {
+    RegisterContent(onRegisterClicked = { email, password, name ->
+    }, onSignInClick = {})
 }

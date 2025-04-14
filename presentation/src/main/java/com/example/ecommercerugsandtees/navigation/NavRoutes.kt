@@ -10,6 +10,9 @@ object HomeScreen
 object LoginScreen
 
 @Serializable
+object LogoutScreen
+
+@Serializable
 object RegisterScreen
 
 @Serializable
